@@ -2,11 +2,14 @@
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Networking;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media;
 
 namespace NGopher.Gopher
 {
@@ -62,7 +65,7 @@ namespace NGopher.Gopher
 
         public async Task<List<GopherItem>> GetDirectoryContents(string selector = "")
         {
-            var response = await MakeRequest(selector);
+            var response = await MakeTextRequest(selector);
             if (response == null)
                 return null;
 
@@ -71,9 +74,28 @@ namespace NGopher.Gopher
             return lines.Select(GopherItem.BuildItem).Where(gi => gi != null).ToList();
         }
 
-        private async Task<string> MakeRequest(string selector = "")
+        public async Task<byte[]> GetFileContents(string selector)
         {
-            string retval;
+            return await MakeBinaryRequest(selector);
+        }
+
+        private async Task<byte[]> MakeBinaryRequest(string selector)
+        {
+            return (byte[]) (await MakeRequest(true, selector));
+        }
+
+        private async Task<string> MakeTextRequest(string selector = "")
+        {
+            return (string) (await MakeRequest(false, selector));
+        }
+
+        private async Task<object> MakeRequest(bool binary = false, string selector = "")
+        {
+            object retval;
+            if (binary)
+                retval = new List<Byte>();
+            else
+                retval = null;
 
             if (!await Connect())
                 return null;
@@ -91,15 +113,24 @@ namespace NGopher.Gopher
                 var reader = new DataReader(_streamSocket.InputStream);
                 reader.InputStreamOptions = InputStreamOptions.Partial;
 
-                var sb = new StringBuilder();
                 uint x;
-                do
+                if (binary)
                 {
-                    x = await reader.LoadAsync(512);
-                    sb.Append(reader.ReadString(x));
-                } while (x > 0);
-
-                retval = sb.ToString();
+                    do
+                    {
+                        x = await reader.LoadAsync(512);
+                        ((List<Byte>) (retval)).AddRange(reader.ReadBuffer(x).ToArray());
+                    } while (x > 0);
+                }
+                else { 
+                    var sb = new StringBuilder();
+                    do
+                    {
+                        x = await reader.LoadAsync(512);
+                        sb.Append(reader.ReadString(x));
+                    } while (x > 0);
+                    retval = sb.ToString();
+                }
             }
             catch (Exception ex)
             {
@@ -120,6 +151,8 @@ namespace NGopher.Gopher
                 _streamSocket = null;
             }
 
+            if (binary)
+                return ((List<Byte>) (retval)).ToArray();
             return retval;
         }
     }
