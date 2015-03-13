@@ -22,11 +22,18 @@ namespace NGopher
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class ServerListPage : Page
     {
-        public MainPage()
+        private List<String> _serverList = new List<string>()
+        {
+            "gopher.semmel.ch:70",
+            "gopher.floodgap.com:70"
+        };
+
+        public ServerListPage()
         {
             this.InitializeComponent();
+            ServerListView.ItemsSource = _serverList;
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
         }

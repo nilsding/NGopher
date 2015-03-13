@@ -1,0 +1,39 @@
+﻿<Page
+    x:Class="NGopher.ServerListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NGopher"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="ServerTemplate">
+            <TextBlock Text="{Binding}"
+                       Style="{StaticResource ListViewItemTextBlockStyle}" />
+        </DataTemplate>
+    </Page.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0"
+                    Margin="19,0,0,0">
+            <TextBlock Text="server list"
+                       Margin="0,-6.5,0,26.5"
+                       Style="{ThemeResource HeaderTextBlockStyle}"
+                       CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}" />
+        </StackPanel>
+        <ListView Name="ServerListView"
+                  Grid.Row="1"
+                  Padding="19,9.5,19,0"
+                  ItemTemplate="{StaticResource ServerTemplate}"
+                  ItemsSource="{Binding}"
+                  SelectionMode="None"
+                  IsItemClickEnabled="True"></ListView>
+    </Grid>
+</Page>
