@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.Networking;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml.Controls;
 
 namespace NGopher.Gopher
 {
@@ -62,7 +64,18 @@ namespace NGopher.Gopher
 
         public async Task<List<GopherItem>> GetDirectoryContents(string selector = "")
         {
-            var contents = new List<GopherItem>();
+            var response = await MakeRequest(selector);
+            if (response == null)
+                return null;
+
+            var lines = response.Split('\n');
+
+            return lines.Select(GopherItem.BuildItem).Where(gi => gi != null).ToList();
+        }
+
+        private async Task<string> MakeRequest(string selector = "")
+        {
+            string retval;
 
             if (!await Connect())
                 return null;
@@ -88,14 +101,7 @@ namespace NGopher.Gopher
                     sb.Append(reader.ReadString(x));
                 } while (x > 0);
 
-                var entries = sb.ToString().Split('\n');
-                foreach (var entry in entries)
-                {
-                    Debug.WriteLine("<" + entry);
-                    var gi = GopherItem.BuildItem(entry);
-                    if (gi != null)
-                        contents.Add(gi);
-                }
+                retval = sb.ToString();
             }
             catch (Exception ex)
             {
@@ -116,7 +122,7 @@ namespace NGopher.Gopher
                 _streamSocket = null;
             }
 
-            return contents;
+            return retval;
         }
     }
 }

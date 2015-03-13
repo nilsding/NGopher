@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -46,7 +47,7 @@ namespace NGopher
             // this event is handled for you.
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             GopherClient gc = new GopherClient
             {
@@ -54,7 +55,12 @@ namespace NGopher
                 Port = 70
             };
 
-            var x = gc.GetDirectoryContents();
+            var x = await gc.GetDirectoryContents();
+            if (x == null) return;
+            foreach (var y in x)
+            {
+                Debug.WriteLine(y);
+            }
         }
     }
 }
