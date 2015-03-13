@@ -91,11 +91,7 @@ namespace NGopher.Gopher
 
         private async Task<object> MakeRequest(bool binary = false, string selector = "")
         {
-            object retval;
-            if (binary)
-                retval = new List<Byte>();
-            else
-                retval = null;
+            object retval = binary ? new List<Byte>() : null;
 
             if (!await Connect())
                 return null;
