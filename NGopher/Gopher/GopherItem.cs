@@ -1,4 +1,6 @@
 using System;
+using System.Globalization;
+using System.Text;
 
 namespace NGopher.Gopher
 {
@@ -19,7 +21,10 @@ namespace NGopher.Gopher
         public const char TYPE_TN3270      = 'T';
         public const char TYPE_GIF         = 'g';
         public const char TYPE_IMAGE       = 'I';
+        // Non-RFC types
+        public const char TYPE_HTML        = 'h';
         public const char TYPE_INFO        = 'i';
+        public const char TYPE_AUDIO       = 's';
 
         public char Type { get; set; }
         public string UserName { get; set; }
@@ -48,6 +53,11 @@ namespace NGopher.Gopher
                 Host = list[2],
                 Port = port
             };
+        }
+
+        public override string ToString()
+        {
+            return String.Format("Type: {0}, UserName: {1}, Selector: {2} (gopher://{3}:{4})", Type, UserName, Selector, Host, Port);
         }
     }
 }
