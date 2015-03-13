@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using NGopher.Gopher;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -43,6 +44,17 @@ namespace NGopher
             // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            GopherClient gc = new GopherClient
+            {
+                Server = "gopher.floodgap.com",
+                Port = 70
+            };
+
+            var x = gc.GetDirectoryContents();
         }
     }
 }
