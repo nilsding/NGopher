@@ -69,5 +69,13 @@ namespace NGopher
                 Debug.WriteLine(y);
             }
         }
+
+        private void ServerListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            ServerListView.IsEnabled = false;
+            var sel = e.ClickedItem as string;
+            this.Frame.Navigate(typeof(DirectoryListingPage), sel + "|/");
+        }
+
     }
 }

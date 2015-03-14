@@ -28,12 +28,13 @@
                        Style="{ThemeResource HeaderTextBlockStyle}"
                        CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}" />
         </StackPanel>
-        <ListView Name="ServerListView"
-                  Grid.Row="1"
-                  Padding="19,9.5,19,0"
-                  ItemTemplate="{StaticResource ServerTemplate}"
-                  ItemsSource="{Binding}"
-                  SelectionMode="None"
-                  IsItemClickEnabled="True"></ListView>
+        <Grid Grid.Row="1"
+              Margin="19,9.5,19,0">
+            <ListView Name="ServerListView"
+                      ItemTemplate="{StaticResource ServerTemplate}"
+                      ItemsSource="{Binding}"
+                      SelectionMode="None"
+                      IsItemClickEnabled="True" ItemClick="ServerListView_ItemClick" />
+        </Grid>
     </Grid>
 </Page>
