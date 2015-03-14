@@ -75,6 +75,7 @@ namespace NGopher
             ServerListView.IsEnabled = false;
             var sel = e.ClickedItem as string;
             this.Frame.Navigate(typeof(DirectoryListingPage), sel + "|/");
+            ServerListView.IsEnabled = true;
         }
 
     }
