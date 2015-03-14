@@ -50,7 +50,7 @@
 				ItemTemplate="{StaticResource GopherItemTemplate}"
 				ItemsSource="{Binding}"
 				SelectionMode="None"
-				IsItemClickEnabled="True"/>
+				IsItemClickEnabled="True" ItemClick="DirectoryListView_ItemClick"/>
 		</Grid>
 	</Grid>
 </Page>
