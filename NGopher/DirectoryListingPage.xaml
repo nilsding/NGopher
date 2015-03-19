@@ -11,21 +11,23 @@
 
     <Page.Resources>
         <DataTemplate x:Key="GopherItemTemplate">
-        	<StackPanel Orientation="Horizontal">
-        		<Border Margin="10">
-					<Image Width="48" Height="48" Source="Assets/StoreLogo.png" Stretch="UniformToFill"/>
-				</Border>
-				<StackPanel>
-				    <TextBlock Text="{Binding UserName}"
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding UserName}"
 					           Style="{StaticResource ListViewItemTextBlockStyle}"/>
-				    <TextBlock Text="{Binding Selector}"
-					           Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"/>
-				</StackPanel>
-        	</StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FriendlyName}"
+					               Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"
+                                   FontWeight="Bold" Margin="0,0,9.5,0"/>
+                        <TextBlock Text="{Binding Selector}"
+					               Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
         </DataTemplate>
     </Page.Resources>
-    
-	<Grid x:Name="LayoutRoot">
+
+    <Grid x:Name="LayoutRoot">
 
 		<Grid.ChildrenTransitions>
 			<TransitionCollection>

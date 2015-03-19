@@ -80,7 +80,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Folder Include="Strings\en\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -91,6 +90,7 @@
     </Compile>
     <Compile Include="Gopher\GopherClient.cs" />
     <Compile Include="Gopher\GopherItem.cs" />
+    <Compile Include="ResourceLoader.cs" />
     <Compile Include="ServerListPage.xaml.cs">
       <DependentUpon>ServerListPage.xaml</DependentUpon>
     </Compile>
@@ -122,6 +122,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

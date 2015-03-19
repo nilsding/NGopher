@@ -24,6 +24,34 @@ namespace NGopher.Gopher
         public const char TYPE_INFO        = 'i';
         public const char TYPE_AUDIO       = 's';
 
+        public string FriendlyName
+        {
+            get
+            {
+                switch (Type)
+                {
+                    case TYPE_FILE:        return ResourceLoader.Instance.GetString("TypeFile");
+                    case TYPE_DIRECTORY:   return ResourceLoader.Instance.GetString("TypeDirectory");
+                    case TYPE_PHONEBOOK:   return ResourceLoader.Instance.GetString("TypePhoneBook");
+                    case TYPE_ERROR:       return ResourceLoader.Instance.GetString("TypeError");
+                    case TYPE_BINHEX:      return ResourceLoader.Instance.GetString("TypeBinHex");
+                    case TYPE_PC_DOS_BIN:  return ResourceLoader.Instance.GetString("TypePCDosBin");
+                    case TYPE_UUENCODE:    return ResourceLoader.Instance.GetString("TypeUUEncode");
+                    case TYPE_INDEXSEARCH: return ResourceLoader.Instance.GetString("TypeIndexSearch");
+                    case TYPE_TELNET:      return ResourceLoader.Instance.GetString("TypeTelnet");
+                    case TYPE_BINARY:      return ResourceLoader.Instance.GetString("TypeBinary");
+                    case TYPE_REDUNDANT:   return ResourceLoader.Instance.GetString("TypeRedundant");
+                    case TYPE_TN3270:      return ResourceLoader.Instance.GetString("TypeTN3270");
+                    case TYPE_GIF:         return ResourceLoader.Instance.GetString("TypeGif");
+                    case TYPE_IMAGE:       return ResourceLoader.Instance.GetString("TypeImage");
+                    case TYPE_HTML:        return ResourceLoader.Instance.GetString("TypeHtml");
+                    case TYPE_INFO:        return ResourceLoader.Instance.GetString("TypeInfo");
+                    case TYPE_AUDIO:       return ResourceLoader.Instance.GetString("TypeAudio");
+                    default:               return ResourceLoader.Instance.GetString("TypeUnknown");
+                }
+            }
+        }
+
         public char Type { get; set; }
         public string UserName { get; set; }
         public string Selector { get; set; }
