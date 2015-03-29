@@ -83,6 +83,7 @@ namespace NGopher
                     case GopherItem.TYPE_REDUNDANT:
                     case GopherItem.TYPE_TN3270:
                     case GopherItem.TYPE_GIF:  // fallthrough
+                    case GopherItem.TYPE_PNG:  // fallthrough
                     case GopherItem.TYPE_IMAGE:
                         this.Frame.Navigate(typeof(ImageViewPage),
                             _gopher.Server + ":" + _gopher.Port + "|" + item.Selector);

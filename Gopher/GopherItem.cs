@@ -23,6 +23,7 @@ namespace NGopher.Gopher
         public const char TYPE_HTML        = 'h';
         public const char TYPE_INFO        = 'i';
         public const char TYPE_AUDIO       = 's';
+        public const char TYPE_PNG         = 'p';
 
         public string FriendlyName
         {
@@ -47,6 +48,7 @@ namespace NGopher.Gopher
                     case TYPE_HTML:        return ResourceLoader.Instance.GetString("TypeHtml");
                     case TYPE_INFO:        return ResourceLoader.Instance.GetString("TypeInfo");
                     case TYPE_AUDIO:       return ResourceLoader.Instance.GetString("TypeAudio");
+                    case TYPE_PNG:         return ResourceLoader.Instance.GetString("TypePng");
                     default:               return ResourceLoader.Instance.GetString("TypeUnknown");
                 }
             }

@@ -154,7 +154,7 @@
     <value>TN3270</value>
   </data>
   <data name="TypeGif" xml:space="preserve">
-    <value>GIF</value>
+    <value>GIF image</value>
   </data>
   <data name="TypeImage" xml:space="preserve">
     <value>Image</value>
@@ -170,5 +170,8 @@
   </data>
   <data name="TypeUnknown" xml:space="preserve">
     <value>Unknown type!</value>
+  </data>
+  <data name="TypePng" xml:space="preserve">
+    <value>PNG image</value>
   </data>
 </root>
