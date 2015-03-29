@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using NGopher.Common;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -26,6 +28,7 @@ namespace NGopher
     public sealed partial class App : Application
     {
         private TransitionCollection transitions;
+        public ContinuationManager ContinuationManager { get; private set; }
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -48,6 +51,67 @@ namespace NGopher
                 e.Handled = true;
                 rootFrame.GoBack();
             }
+        }
+
+        private Frame CreateRootFrame()
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            if (rootFrame == null)
+            {
+                rootFrame = new Frame();
+                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
+                rootFrame.NavigationFailed += OnNavigationFailed;
+                Window.Current.Content = rootFrame;
+            }
+
+            return rootFrame;
+        }
+
+        private async Task RestoreStatusAsync(ApplicationExecutionState previousExecutionState)
+        {
+            if (previousExecutionState == ApplicationExecutionState.Terminated)
+            {
+                try
+                {
+                    await SuspensionManager.RestoreAsync();
+                }
+                catch (SuspensionManagerException)
+                {
+                    // silently continue, assuming nothing bad happened...
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handle OnActivated event to deal with File Open/Save continuation activation kinds
+        /// </summary>
+        /// <param name="e">application activated event arguments, it can be casted to a proper sub-type based on ActivationKind</param>
+        protected async override void OnActivated(IActivatedEventArgs e)
+        {
+            base.OnActivated(e);
+
+            ContinuationManager = new ContinuationManager();
+            Frame rootFrame = CreateRootFrame();
+            await RestoreStatusAsync(e.PreviousExecutionState);
+
+            if (rootFrame.Content == null)
+            {
+                rootFrame.Navigate(typeof (ServerListPage));
+            }
+
+            var continuationEventArgs = e as IContinuationActivatedEventArgs;
+            if (continuationEventArgs != null)
+            {
+                ContinuationManager.Continue(continuationEventArgs, rootFrame);
+            }
+
+            Window.Current.Activate();
+        }
+
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            throw new Exception("failed to load page " + e.SourcePageType.FullName);
         }
 
         /// <summary>
@@ -133,11 +197,14 @@ namespace NGopher
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
 
             // TODO: Save application state and stop any background activity
+
+            await SuspensionManager.SaveAsync();
+
             deferral.Complete();
         }
     }

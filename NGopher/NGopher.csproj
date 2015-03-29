@@ -85,6 +85,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\ContinuationManager.cs" />
+    <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="DirectoryListingPage.xaml.cs">
       <DependentUpon>DirectoryListingPage.xaml</DependentUpon>
     </Compile>
