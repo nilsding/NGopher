@@ -32,7 +32,7 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClientServer" />
-    <Capability Name="picturesLibrary" />
     <Capability Name="removableStorage" />
+    <Capability Name="picturesLibrary" />
   </Capabilities>
 </Package>
