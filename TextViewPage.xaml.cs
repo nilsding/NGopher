@@ -62,7 +62,7 @@ namespace NGopher
             ContentTextBlock.Text = _content;
         }
 
-        private async void AppBarButton_Click(object sender, RoutedEventArgs e)
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var fn = _selector.Split('/').Last().Replace(".txt", "");
             var fsp = new FileSavePicker
