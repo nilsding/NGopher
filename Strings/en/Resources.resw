@@ -171,6 +171,9 @@
   <data name="TypeUnknown" xml:space="preserve">
     <value>Unknown type!</value>
   </data>
+  <data name="SaveFileAppBarButton.Label" xml:space="preserve">
+    <value>save</value>
+  </data>
   <data name="TypePng" xml:space="preserve">
     <value>PNG image</value>
   </data>
