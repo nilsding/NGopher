@@ -33,7 +33,7 @@
             <TextBlock x:Name="SelectorTextBlock" Text="SELECTOR" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
         </StackPanel>
 
-        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="0,9.5,0,0">
             <ScrollViewer x:Name="ScrollViewer" ZoomMode="Enabled">
                 <Image x:Name="ContentImage" />
             </ScrollViewer>
