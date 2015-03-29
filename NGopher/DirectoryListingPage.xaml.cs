@@ -65,9 +65,12 @@ namespace NGopher
                 switch (item.Type)
                 {
                     case GopherItem.TYPE_FILE:
+                        this.Frame.Navigate(typeof (TextViewPage),
+                            _gopher.Server + ":" + _gopher.Port + "|" + item.Selector);
                         break;
                     case GopherItem.TYPE_DIRECTORY:
-                        this.Frame.Navigate(typeof(DirectoryListingPage), _gopher.Server + ":" + _gopher.Port + "|" + item.Selector);
+                        this.Frame.Navigate(typeof(DirectoryListingPage),
+                            _gopher.Server + ":" + _gopher.Port + "|" + item.Selector);
                         break;
                     case GopherItem.TYPE_PHONEBOOK:
                     case GopherItem.TYPE_ERROR:
