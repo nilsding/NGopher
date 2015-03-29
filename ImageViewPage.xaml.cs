@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Provider;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -23,11 +27,12 @@ namespace NGopher
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ImageViewPage : Page
+    public sealed partial class ImageViewPage : Page, IFileSavePickerContinuable
     {
         private GopherClient _gopher;
-        private Image _content;
         private string _selector;
+        private byte[] _content;
+        private BitmapImage _image;
 
         public ImageViewPage()
         {
@@ -52,17 +57,48 @@ namespace NGopher
             };
             _selector = y[1];
             SelectorTextBlock.Text = _selector.ToUpper();
-            var content = await _gopher.MakeBinaryRequest(_selector);
+            _content = await _gopher.MakeBinaryRequest(_selector);
             using (InMemoryRandomAccessStream ms = new InMemoryRandomAccessStream())
             {
                 using (DataWriter writer = new DataWriter(ms.GetOutputStreamAt(0)))
                 {
-                    writer.WriteBytes(content);
+                    writer.WriteBytes(_content);
                     writer.StoreAsync().GetResults();
                 }
-                var img = new BitmapImage();
-                await img.SetSourceAsync(ms);
-                ContentImage.Source = img;
+                _image = new BitmapImage();
+                await _image.SetSourceAsync(ms);
+                ContentImage.Source = _image;
+            }
+        }
+
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var fn = _selector.Split('/').Last();
+            var fsp = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.PicturesLibrary,
+                SuggestedFileName = fn
+            };
+            fsp.FileTypeChoices.Add("Image file", new List<string> { ".gif", ".png", ".jpg", ".jpeg", ".bmp" });
+            fsp.PickSaveFileAndContinue();
+        }
+
+        public async void ContinueFileSavePicker(FileSavePickerContinuationEventArgs args)
+        {
+            StorageFile file = args.File;
+
+            if (file == null) return;  // saving cancelled
+
+            CachedFileManager.DeferUpdates(file);
+            await FileIO.WriteBytesAsync(file, _content);  // save _content to file
+            FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
+            if (status == FileUpdateStatus.Complete)
+            {
+                // successfully saved file
+            }
+            else
+            {
+                // oh no
             }
         }
     }

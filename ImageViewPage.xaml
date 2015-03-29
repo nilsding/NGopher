@@ -10,7 +10,7 @@
     <Page.BottomAppBar>
         <CommandBar ClosedDisplayMode="Minimal">
             <CommandBar.PrimaryCommands>
-                <AppBarButton x:Uid="SaveFileAppBarButton" Icon="save" Label="save"/>
+                <AppBarButton x:Uid="SaveFileAppBarButton" Icon="save" Label="save" Click="AppBarButton_Click"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
@@ -34,8 +34,13 @@
         </StackPanel>
 
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="0,9.5,0,0">
-            <ScrollViewer x:Name="ScrollViewer" ZoomMode="Enabled">
-                <Image x:Name="ContentImage" />
+            <ScrollViewer x:Name="ScrollViewer" 
+                          ZoomMode="Enabled" 
+                          MinZoomFactor="0.7"
+                          MaxZoomFactor="5"
+                          HorizontalScrollBarVisibility="Visible"
+                          VerticalScrollBarVisibility="Visible">
+                <Image x:Name="ContentImage"/>
             </ScrollViewer>
         </Grid>
     </Grid>
