@@ -74,24 +74,19 @@ namespace NGopher.Gopher
             return lines.Select(GopherItem.BuildItem).Where(gi => gi != null).ToList();
         }
 
-        public async Task<byte[]> GetFileContents(string selector)
-        {
-            return await MakeBinaryRequest(selector);
-        }
-
-        private async Task<byte[]> MakeBinaryRequest(string selector)
+        public async Task<byte[]> MakeBinaryRequest(string selector)
         {
             return (byte[]) (await MakeRequest(true, selector));
         }
 
-        private async Task<string> MakeTextRequest(string selector = "")
+        public async Task<string> MakeTextRequest(string selector)
         {
             return (string) (await MakeRequest(false, selector));
         }
 
         private async Task<object> MakeRequest(bool binary = false, string selector = "")
         {
-            object retval = binary ? new List<Byte>() : null;
+            var bytes = new List<Byte>();
 
             if (!await Connect())
                 return null;
@@ -110,23 +105,8 @@ namespace NGopher.Gopher
                 reader.InputStreamOptions = InputStreamOptions.Partial;
 
                 uint x;
-                if (binary)
-                {
-                    do
-                    {
-                        x = await reader.LoadAsync(512);
-                        ((List<Byte>) (retval)).AddRange(reader.ReadBuffer(x).ToArray());
-                    } while (x > 0);
-                }
-                else { 
-                    var sb = new StringBuilder();
-                    do
-                    {
-                        x = await reader.LoadAsync(512);
-                        sb.Append(reader.ReadString(x));
-                    } while (x > 0);
-                    retval = sb.ToString();
-                }
+                while ((x = await reader.LoadAsync(512)) > 0)
+                    bytes.AddRange(reader.ReadBuffer(x).ToArray());
             }
             catch (Exception ex)
             {
@@ -148,8 +128,8 @@ namespace NGopher.Gopher
             }
 
             if (binary)
-                return ((List<Byte>) (retval)).ToArray();
-            return retval;
+                return bytes.ToArray();
+            return Encoding.UTF8.GetString(bytes.ToArray(), 0, bytes.Count);
         }
     }
 }
