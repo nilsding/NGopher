@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -66,11 +67,11 @@ namespace NGopher
                 {
                     case GopherItem.TYPE_FILE:
                         this.Frame.Navigate(typeof (TextViewPage),
-                            _gopher.Server + ":" + _gopher.Port + "|" + item.Selector);
+                            item.Host + ":" + item.Port + "|" + item.Selector);
                         break;
                     case GopherItem.TYPE_DIRECTORY:
                         this.Frame.Navigate(typeof(DirectoryListingPage),
-                            _gopher.Server + ":" + _gopher.Port + "|" + item.Selector);
+                            item.Host + ":" + item.Port + "|" + item.Selector);
                         break;
                     case GopherItem.TYPE_PHONEBOOK:
                     case GopherItem.TYPE_ERROR:
@@ -82,16 +83,18 @@ namespace NGopher
                     case GopherItem.TYPE_BINARY:
                     case GopherItem.TYPE_REDUNDANT:
                     case GopherItem.TYPE_TN3270:
+                        break;
                     case GopherItem.TYPE_GIF:  // fallthrough
                     case GopherItem.TYPE_PNG:  // fallthrough
                     case GopherItem.TYPE_IMAGE:
                         this.Frame.Navigate(typeof(ImageViewPage),
-                            _gopher.Server + ":" + _gopher.Port + "|" + item.Selector);
+                            item.Host + ":" + item.Port + "|" + item.Selector);
                         break;
                     case GopherItem.TYPE_HTML:
-                        if (item.Selector.ToUpper().StartsWith("URL:"))
+                        var url = item.Selector.TrimStart('/');
+                        if (url.ToUpper().StartsWith("URL:"))
                         {
-                            var uri = new Uri(item.Selector.Substring(4));
+                            var uri = new Uri(url.Substring(4));
                             Windows.System.Launcher.LaunchUriAsync(uri);
                         }
                         break;
