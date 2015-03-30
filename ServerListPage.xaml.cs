@@ -54,22 +54,6 @@ namespace NGopher
             // this event is handled for you.
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            GopherClient gc = new GopherClient
-            {
-                Server = "gopher.floodgap.com",
-                Port = 70
-            };
-
-            var x = await gc.GetDirectoryContents();
-            if (x == null) return;
-            foreach (var y in x)
-            {
-                Debug.WriteLine(y);
-            }
-        }
-
         private void ServerListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             ServerListView.IsEnabled = false;
