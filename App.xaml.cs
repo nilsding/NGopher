@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -60,7 +59,6 @@ namespace NGopher
             if (rootFrame == null)
             {
                 rootFrame = new Frame();
-                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
                 rootFrame.NavigationFailed += OnNavigationFailed;
                 Window.Current.Content = rootFrame;
             }
@@ -89,6 +87,26 @@ namespace NGopher
         /// <param name="e">application activated event arguments, it can be casted to a proper sub-type based on ActivationKind</param>
         protected async override void OnActivated(IActivatedEventArgs e)
         {
+            if (e.Kind == ActivationKind.Protocol)
+            {
+                ProtocolActivatedEventArgs args = e as ProtocolActivatedEventArgs;
+
+                if (args != null && args.Uri.AbsoluteUri.StartsWith("gopher://"))
+                {
+                    var x = args.Uri.AbsoluteUri.Remove(0, 9).Split(new[] { '/' }, 2);
+                    var path = "";
+                    try { path = x[1]; }
+                    catch (IndexOutOfRangeException) { }
+
+                    var port = "70";
+                    try { port = x[0].Split(':')[1]; }
+                    catch (IndexOutOfRangeException) { }
+
+                    CreateRootFrame().Navigate(typeof(DirectoryListingPage), x[0] + ":" + port + "|/" + path);
+                    Window.Current.Activate();
+                }
+                return;
+            }
             base.OnActivated(e);
 
             ContinuationManager = new ContinuationManager();
@@ -129,25 +147,13 @@ namespace NGopher
             }
 #endif
 
-            Frame rootFrame = Window.Current.Content as Frame;
+            Frame rootFrame = CreateRootFrame();
 
-            // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
-            if (rootFrame == null)
+            rootFrame.CacheSize = 1;
+
+            if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
             {
-                // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
-
-                // TODO: change this value to a cache size that is appropriate for your application
-                rootFrame.CacheSize = 1;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    // TODO: Load state from previously suspended application
-                }
-
-                // Place the frame in the current Window
-                Window.Current.Content = rootFrame;
+                // TODO: Load state from previously suspended application
             }
 
             if (rootFrame.Content == null)
