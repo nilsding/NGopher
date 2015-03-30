@@ -58,7 +58,7 @@ namespace NGopher
             DirectoryListView.ItemsSource = contents;
         }
 
-        private void DirectoryListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void DirectoryListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             DirectoryListView.IsEnabled = false;
             var item = e.ClickedItem as GopherItem;
@@ -78,7 +78,16 @@ namespace NGopher
                     case GopherItem.TYPE_BINHEX:
                     case GopherItem.TYPE_PC_DOS_BIN:
                     case GopherItem.TYPE_UUENCODE:
+                        break;
                     case GopherItem.TYPE_INDEXSEARCH:
+                        var dlg = new SearchDialog(item);
+                        var result = await dlg.ShowAsync();
+                        if (result == ContentDialogResult.Primary)
+                        {
+                            this.Frame.Navigate(typeof(DirectoryListingPage),
+                                item.Host + ":" + item.Port + "|" + item.Selector + "\t" + dlg.SearchText);
+                        }
+                        break;
                     case GopherItem.TYPE_TELNET:
                     case GopherItem.TYPE_BINARY:
                     case GopherItem.TYPE_REDUNDANT:

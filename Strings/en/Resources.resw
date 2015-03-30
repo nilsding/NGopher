@@ -177,4 +177,16 @@
   <data name="TypePng" xml:space="preserve">
     <value>PNG image</value>
   </data>
+  <data name="SearchDialog.PrimaryButtonText" xml:space="preserve">
+    <value>search</value>
+  </data>
+  <data name="SearchDialog.SecondaryButtonText" xml:space="preserve">
+    <value>cancel</value>
+  </data>
+  <data name="SearchDialog.Title" xml:space="preserve">
+    <value>SEARCH</value>
+  </data>
+  <data name="SearchTextBox.Header" xml:space="preserve">
+    <value>Search string</value>
+  </data>
 </root>
