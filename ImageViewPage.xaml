@@ -34,9 +34,8 @@
         </StackPanel>
 
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="0,9.5,0,0">
-            <ScrollViewer x:Name="ScrollViewer" 
-                          ZoomMode="Enabled" 
-                          MinZoomFactor="0.7"
+            <ScrollViewer x:Name="ScrollViewer"
+                          ZoomMode="Enabled"
                           MaxZoomFactor="5"
                           HorizontalScrollBarVisibility="Visible"
                           VerticalScrollBarVisibility="Visible">
