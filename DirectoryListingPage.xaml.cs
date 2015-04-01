@@ -67,17 +67,18 @@ namespace NGopher
                 {
                     case GopherItem.TYPE_FILE:
                         this.Frame.Navigate(typeof (TextViewPage),
-                            item.Host + ":" + item.Port + "|" + item.Selector);
+                            string.Format("{0}:{1}|{2}", item.Host, item.Port, item.Selector));
                         break;
                     case GopherItem.TYPE_DIRECTORY:
                         this.Frame.Navigate(typeof(DirectoryListingPage),
-                            item.Host + ":" + item.Port + "|" + item.Selector);
+                            string.Format("{0}:{1}|{2}", item.Host, item.Port, item.Selector));
                         break;
                     case GopherItem.TYPE_PHONEBOOK:
                     case GopherItem.TYPE_ERROR:
                     case GopherItem.TYPE_BINHEX:
                     case GopherItem.TYPE_PC_DOS_BIN:
                     case GopherItem.TYPE_UUENCODE:
+                        new MessageDialog(String.Format("{0} is not implemented yet.", item.FriendlyName)).ShowAsync();
                         break;
                     case GopherItem.TYPE_INDEXSEARCH:
                         var dlg = new SearchDialog(item);
@@ -85,19 +86,20 @@ namespace NGopher
                         if (result == ContentDialogResult.Primary)
                         {
                             this.Frame.Navigate(typeof(DirectoryListingPage),
-                                item.Host + ":" + item.Port + "|" + item.Selector + "\t" + dlg.SearchText);
+                                string.Format("{0}:{1}|{2}\t{3}", item.Host, item.Port, item.Selector, dlg.SearchText));
                         }
                         break;
                     case GopherItem.TYPE_TELNET:
                     case GopherItem.TYPE_BINARY:
                     case GopherItem.TYPE_REDUNDANT:
                     case GopherItem.TYPE_TN3270:
+                        new MessageDialog(String.Format("{0} is not implemented yet.", item.FriendlyName)).ShowAsync();
                         break;
                     case GopherItem.TYPE_GIF:  // fallthrough
                     case GopherItem.TYPE_PNG:  // fallthrough
                     case GopherItem.TYPE_IMAGE:
                         this.Frame.Navigate(typeof(ImageViewPage),
-                            item.Host + ":" + item.Port + "|" + item.Selector);
+                            string.Format("{0}:{1}|{2}", item.Host, item.Port, item.Selector));
                         break;
                     case GopherItem.TYPE_HTML:
                         var url = item.Selector.TrimStart('/');
@@ -105,12 +107,16 @@ namespace NGopher
                         {
                             var uri = new Uri(url.Substring(4));
                             Windows.System.Launcher.LaunchUriAsync(uri);
+                            break;
                         }
+                        this.Frame.Navigate(typeof (WebViewPage),
+                            string.Format("{0}:{1}|{2}", item.Host, item.Port, item.Selector));
                         break;
                     case GopherItem.TYPE_INFO:
                         new MessageDialog(item.UserName).ShowAsync();
                         break;
                     case GopherItem.TYPE_AUDIO:
+                        new MessageDialog(String.Format("{0} is not implemented yet.", item.FriendlyName)).ShowAsync();
                         break;
                     default:
                         new MessageDialog(String.Format("Unknown type: '{0}'.", item.Type)).ShowAsync();
