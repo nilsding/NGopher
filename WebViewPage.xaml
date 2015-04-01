@@ -1,0 +1,46 @@
+﻿<Page
+    x:Class="NGopher.WebViewPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NGopher"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Minimal">
+            <CommandBar.PrimaryCommands>
+                <!--<AppBarButton IsEnabled="False" x:Name="BackAppBarButton" x:Uid="BackAppBarButton" Icon="Back" Label="back" Click="BackAppBarButton_Click" />
+                <AppBarButton IsEnabled="False" x:Name="ForwardAppBarButton" x:Uid="ForwardAppBarButton" Icon="Forward" Label="forward" Click="ForwardAppBarButton_Click" /> -->
+                <AppBarButton x:Uid="SaveFileAppBarButton" Icon="save" Label="save" Click="AppBarButton_Click"/>
+            </CommandBar.PrimaryCommands>
+            <!--<CommandBar.SecondaryCommands>
+                <AppBarButton x:Uid="SaveFileAppBarButton" Icon="save" Label="save" Click="AppBarButton_Click"/>
+            </CommandBar.SecondaryCommands>-->
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title Panel -->
+        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <TextBlock x:Name="SelectorTextBlock" Text="SELECTOR" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+        </StackPanel>
+
+        <!--TODO: Content should be placed within the following grid-->
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <WebView x:Name="ContentWebView" NavigationStarting="ContentWebView_NavigationStarting" />
+        </Grid>
+    </Grid>
+</Page>
