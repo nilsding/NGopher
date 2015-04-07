@@ -78,7 +78,7 @@ namespace NGopher
                     case GopherItem.TYPE_BINHEX:
                     case GopherItem.TYPE_PC_DOS_BIN:
                     case GopherItem.TYPE_UUENCODE:
-                        new MessageDialog(String.Format("{0} is not implemented yet.", item.FriendlyName)).ShowAsync();
+                        await new MessageDialog(String.Format("{0} is not implemented yet.", item.FriendlyName)).ShowAsync();
                         break;
                     case GopherItem.TYPE_INDEXSEARCH:
                         var dlg = new SearchDialog(item);
@@ -93,7 +93,7 @@ namespace NGopher
                     case GopherItem.TYPE_BINARY:
                     case GopherItem.TYPE_REDUNDANT:
                     case GopherItem.TYPE_TN3270:
-                        new MessageDialog(String.Format("{0} is not implemented yet.", item.FriendlyName)).ShowAsync();
+                        await new MessageDialog(String.Format("{0} is not implemented yet.", item.FriendlyName)).ShowAsync();
                         break;
                     case GopherItem.TYPE_GIF:  // fallthrough
                     case GopherItem.TYPE_PNG:  // fallthrough
@@ -106,20 +106,20 @@ namespace NGopher
                         if (url.ToUpper().StartsWith("URL:"))
                         {
                             var uri = new Uri(url.Substring(4));
-                            Windows.System.Launcher.LaunchUriAsync(uri);
+                            await Windows.System.Launcher.LaunchUriAsync(uri);
                             break;
                         }
                         this.Frame.Navigate(typeof (WebViewPage),
                             string.Format("{0}:{1}|{2}", item.Host, item.Port, item.Selector));
                         break;
                     case GopherItem.TYPE_INFO:
-                        new MessageDialog(item.UserName).ShowAsync();
+                        await new MessageDialog(item.UserName).ShowAsync();
                         break;
                     case GopherItem.TYPE_AUDIO:
-                        new MessageDialog(String.Format("{0} is not implemented yet.", item.FriendlyName)).ShowAsync();
+                        await new MessageDialog(String.Format("{0} is not implemented yet.", item.FriendlyName)).ShowAsync();
                         break;
                     default:
-                        new MessageDialog(String.Format("Unknown type: '{0}'.", item.Type)).ShowAsync();
+                        await new MessageDialog(String.Format("Unknown type: '{0}'.", item.Type)).ShowAsync();
                         break;
                 }
             DirectoryListView.IsEnabled = true;
