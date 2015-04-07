@@ -24,10 +24,10 @@ namespace NGopher
     /// </summary>
     public sealed partial class ServerListPage : Page
     {
-        private List<String> _serverList = new List<string>()
+        private List<string[]> _serverList = new List<string[]>()
         {
-            "gopher.semmel.ch:70",
-            "gopher.floodgap.com:70"
+            new[] {"gopher.semmel.ch",    "70"},
+            new[] {"gopher.floodgap.com", "70"}
         };
 
         public ServerListPage()
@@ -57,8 +57,8 @@ namespace NGopher
         private void ServerListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             ServerListView.IsEnabled = false;
-            var sel = e.ClickedItem as string;
-            this.Frame.Navigate(typeof(DirectoryListingPage), sel + "|/");
+            var sel = e.ClickedItem as string[];
+            this.Frame.Navigate(typeof(DirectoryListingPage), string.Format("{0}\x01{1}\x02/", sel[0], sel[1]));
             ServerListView.IsEnabled = true;
         }
 

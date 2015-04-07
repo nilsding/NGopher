@@ -40,8 +40,8 @@ namespace NGopher
             if (e.Parameter == null) return;
 
             var server = e.Parameter as string;
-            var x = server.Split(':');
-            var y = x[1].Split('|');
+            var x = server.Split('\x01');
+            var y = x[1].Split('\x02');
             _gopher = new GopherClient
             {
                 Server = x[0],
@@ -67,11 +67,11 @@ namespace NGopher
                 {
                     case GopherItem.TYPE_FILE:
                         this.Frame.Navigate(typeof (TextViewPage),
-                            string.Format("{0}:{1}|{2}", item.Host, item.Port, item.Selector));
+                            string.Format("{0}\x01{1}\x02{2}", item.Host, item.Port, item.Selector));
                         break;
                     case GopherItem.TYPE_DIRECTORY:
                         this.Frame.Navigate(typeof(DirectoryListingPage),
-                            string.Format("{0}:{1}|{2}", item.Host, item.Port, item.Selector));
+                            string.Format("{0}\x01{1}\x02{2}", item.Host, item.Port, item.Selector));
                         break;
                     case GopherItem.TYPE_PHONEBOOK:
                     case GopherItem.TYPE_ERROR:
@@ -86,7 +86,7 @@ namespace NGopher
                         if (result == ContentDialogResult.Primary)
                         {
                             this.Frame.Navigate(typeof(DirectoryListingPage),
-                                string.Format("{0}:{1}|{2}\t{3}", item.Host, item.Port, item.Selector, dlg.SearchText));
+                                string.Format("{0}\x01{1}\x02{2}\t{3}", item.Host, item.Port, item.Selector, dlg.SearchText));
                         }
                         break;
                     case GopherItem.TYPE_TELNET:
@@ -99,7 +99,7 @@ namespace NGopher
                     case GopherItem.TYPE_PNG:  // fallthrough
                     case GopherItem.TYPE_IMAGE:
                         this.Frame.Navigate(typeof(ImageViewPage),
-                            string.Format("{0}:{1}|{2}", item.Host, item.Port, item.Selector));
+                            string.Format("{0}\x01{1}\x02{2}", item.Host, item.Port, item.Selector));
                         break;
                     case GopherItem.TYPE_HTML:
                         var url = item.Selector.TrimStart('/');
@@ -110,7 +110,7 @@ namespace NGopher
                             break;
                         }
                         this.Frame.Navigate(typeof (WebViewPage),
-                            string.Format("{0}:{1}|{2}", item.Host, item.Port, item.Selector));
+                            string.Format("{0}\x01{1}\x02{2}", item.Host, item.Port, item.Selector));
                         break;
                     case GopherItem.TYPE_INFO:
                         await new MessageDialog(item.UserName).ShowAsync();

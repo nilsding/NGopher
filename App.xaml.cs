@@ -102,7 +102,7 @@ namespace NGopher
                     try { port = x[0].Split(':')[1]; }
                     catch (IndexOutOfRangeException) { }
 
-                    CreateRootFrame().Navigate(typeof(DirectoryListingPage), x[0] + ":" + port + "|/" + path);
+                    CreateRootFrame().Navigate(typeof(DirectoryListingPage), x[0] + "\x01" + port + "\x02/" + path);
                     Window.Current.Activate();
                 }
                 return;

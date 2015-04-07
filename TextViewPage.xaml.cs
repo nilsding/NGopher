@@ -48,8 +48,8 @@ namespace NGopher
             if (e.Parameter == null) return;
 
             var server = e.Parameter as string;
-            var x = server.Split(':');
-            var y = x[1].Split('|');
+            var x = server.Split('\x01');
+            var y = x[1].Split('\x02');
             _gopher = new GopherClient
             {
                 Server = x[0],

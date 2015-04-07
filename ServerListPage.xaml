@@ -10,7 +10,7 @@
 
     <Page.Resources>
         <DataTemplate x:Key="ServerTemplate">
-            <TextBlock Text="{Binding}"
+            <TextBlock Text="{Binding [0]}"
                        Style="{StaticResource ListViewItemTextBlockStyle}" />
         </DataTemplate>
     </Page.Resources>
